@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Selfie to WhatsApp</title>
+</head>
+<body>
+<h2>Allow camera, take selfie, and send</h2>
+<video id="video" autoplay playsinline style="width: 100%; max-width: 300px;"></video>
+<br>
+<button onclick="takeSelfie()">Take Selfie</button>
+<canvas id="canvas" style="display: none;"></canvas>
+<br>
+<a id="whatsappLink" href="#" target="_blank" style="display: none;">📤 Send via WhatsApp</a>
+
+<script>
+const video = document.getElementById('video');
+const canvas = document.getElementById('canvas');
+const whatsappLink = document.getElementById('whatsappLink');
+
+// Step 1: Get camera access
+navigator.mediaDevices.getUserMedia({ video: true })
+.then(stream => {
+video.srcObject = stream;
+}).catch(err => {
+alert("Camera permission denied");
+});
+
+// Step 2: Take selfie
+function takeSelfie() {
+const context = canvas.getContext('2d');
+canvas.width = video.videoWidth;
+canvas.height = video.videoHeight;
+context.drawImage(video, 0, 0, canvas.width, canvas.height);
+const selfieData = canvas.toDataURL('image/png');
+
+// Option 1: Upload selfie to server (needs backend, not included here)
+// Option 2: Let user send a message to WhatsApp
+const msg = encodeURIComponent("Here is my selfie ✅");
+const whatsappURL = `https://wa.me/254115556779?text=${msg}`;
+
+whatsappLink.href = whatsappURL;
+whatsappLink.style.display = 'inline';
+}
+</script>
+</body>
+</html>
