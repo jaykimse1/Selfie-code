@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+	<title></title>
+	<meta name="generator" content="LibreOffice 7.6.4.1 (Linux)"/>
+	<meta name="created" content="00:00:00"/>
+	<meta name="changed" content="00:00:00"/>
+	<style type="text/css">
+		@page { size: 8.27in 11.69in; margin: 0.79in }
+		p { line-height: 115%; margin-bottom: 0.1in; background: transparent }
+		pre { background: transparent }
+		pre.western { font-family: "Liberation Mono", monospace; font-size: 10pt }
+		pre.cjk { font-family: "NSimSun", monospace; font-size: 10pt }
+		pre.ctl { font-family: "Liberation Mono", monospace; font-size: 10pt }
+	</style>
+</head>
+<body lang="en-US" link="#000080" vlink="#800000" dir="ltr"><pre class="western">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;Selfie to WhatsApp&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h2&gt;Allow camera, take selfie, and send&lt;/h2&gt;
+&lt;video id=&quot;video&quot; autoplay playsinline style=&quot;width: 100%; max-width: 300px;&quot;&gt;&lt;/video&gt;
+&lt;br&gt;
+&lt;button onclick=&quot;takeSelfie()&quot;&gt;Take Selfie&lt;/button&gt;
+&lt;canvas id=&quot;canvas&quot; style=&quot;display: none;&quot;&gt;&lt;/canvas&gt;
+&lt;br&gt;
+&lt;a id=&quot;whatsappLink&quot; href=&quot;#&quot; target=&quot;_blank&quot; style=&quot;display: none;&quot;&gt;📤 Send via WhatsApp&lt;/a&gt;
+
+&lt;script&gt;
+const video = document.getElementById('video');
+const canvas = document.getElementById('canvas');
+const whatsappLink = document.getElementById('whatsappLink');
+
+// Step 1: Get camera access
+navigator.mediaDevices.getUserMedia({ video: true })
+.then(stream =&gt; {
+video.srcObject = stream;
+}).catch(err =&gt; {
+alert(&quot;Camera permission denied&quot;);
+});
+
+// Step 2: Take selfie
+function takeSelfie() {
+const context = canvas.getContext('2d');
+canvas.width = video.videoWidth;
+canvas.height = video.videoHeight;
+context.drawImage(video, 0, 0, canvas.width, canvas.height);
+const selfieData = canvas.toDataURL('image/png');
+
+// Option 1: Upload selfie to server (needs backend, not included here)
+// Option 2: Let user send a message to WhatsApp
+const msg = encodeURIComponent(&quot;Here is my selfie ✅&quot;);
+const whatsappURL = `https://wa.me/254115556779?text=${msg}`;
+
+whatsappLink.href = whatsappURL;
+whatsappLink.style.display = 'inline';
+}
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+</body>
+</html>
